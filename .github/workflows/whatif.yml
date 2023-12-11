@@ -17,7 +17,7 @@ permissions:
   
 env:
   LOCATION: "westus2"
-  BICEP_PATH: "../Infrastructure/main.bicep"
+  BICEP_PATH: "Infrastructure/main.bicep"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   bicep-whatif:
