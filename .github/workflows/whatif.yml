@@ -17,7 +17,7 @@ permissions:
   
 env:
   LOCATION: "westus2"
-
+  BICEP_PATH: "../Infrastructure/main.bicep"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   bicep-whatif:
@@ -41,7 +41,7 @@ jobs:
     - name: Bicep Lint
       uses: Azure/cli@v1
       with:
-        inlineScript: az bicep build --file main.bicep
+        inlineScript: az bicep build --file ${{env.BICEP_PATH}} 
         
     # Validate whether a template is valid at subscription scope
     - name: Bicep Validate
@@ -50,7 +50,7 @@ jobs:
         inlineScript: |
           az deployment sub validate \
             --name validate-${{ github.run_id }} \
-            --template-file main.bicep \
+            --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION     
 
     # Preview changes
@@ -60,7 +60,7 @@ jobs:
         inlineScript: |
           az deployment sub what-if \
             --name whatif-${{ github.run_id }} \
-            --template-file main.bicep \
+            --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION > whatif
             
       # Create string output of Whatif
