@@ -48,7 +48,7 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az deployment group create \
+          az deployment sub create \
             --name validate-${{ github.run_id }} \
             --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION     
@@ -58,7 +58,7 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az deployment group create \
+          az deployment sub create \
             --name whatif-${{ github.run_id }} \
             --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION > whatif
