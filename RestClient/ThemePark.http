@@ -1,0 +1,21 @@
+## Get desitination IDs
+GET https://api.themeparks.wiki/v1/destinations
+
+
+### Get park by id
+@parkId= 47f90d2c-e191-4239-a466-5892ef59a88b
+GET  https://api.themeparks.wiki/v1/entity/{{parkId}}
+
+### Get all of the rides and attractions for a park
+GET https://api.themeparks.wiki/v1/entity/{{parkId}}/children?entityType=Attraction 
+
+### Get all of the live data for the attraction or restaurant
+GET https://api.themeparks.wiki/v1/entity/{{parkId}}/live?
+
+### Get Park Schedule
+GET https://api.themeparks.wiki/v1/entity/{{parkId}}/schedule
+
+### Get Entity Park for specific year and month
+@year=2024
+@month=01
+GET https://api.themeparks.wiki/v1/entity/{{parkId}}/schedule/{{year}}/{{month}}
