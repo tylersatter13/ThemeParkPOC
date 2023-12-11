@@ -1,8 +1,19 @@
 
  param keyVaultName string = 'ThemeParkKeyVault'
- param location string = resourceGroup().location
+ param location string = 'westus2'
+ 
+targetScope = 'subscription'
+module addResourceGroup './Modules/addResourceGroup.bicep' = {
+  name: 'addResourceGroup'
+  scope: subscription()
+  params: {
+    name: 'ThemeParkResourceGroup'
+    location: location
+    exists: false
+  }
+}
 
- module keyvault 'Modules/keyVault.bicep' = {
+/* module keyvault 'Modules/keyVault.bicep' = {
   name: keyVaultName
   params: {
     keyVaultName: 'ThemeParkKeyVault'
@@ -13,4 +24,4 @@
     enablePurgeProtection: true
     enableRbacAuthorization: true
   }
- }
+} */

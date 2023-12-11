@@ -49,22 +49,19 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-         az group deployment validate \
+         az deployment sub validate  \
             --name ${{ github.run_id }} \
-            --resource-group ${{env.RESOURCE_GROUP}} \
             --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION     
-
     # Preview changes
     - name: "What-If"
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az deployment sub create \
+          az deployment sub what-if \
             --name whatif-${{ github.run_id }} \
             --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION > whatif
-            
       # Create string output of Whatif
     - name: Create String Output
       id: whatif-string
