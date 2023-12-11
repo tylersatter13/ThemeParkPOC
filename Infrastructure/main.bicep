@@ -6,7 +6,7 @@
   name: keyVaultName
   params: {
     keyVaultName: 'ThemeParkKeyVault'
-    location: resourceGroup().location
+    location: location
     tags: null
     createMode: 'default'
     enableSoftDelete: true
