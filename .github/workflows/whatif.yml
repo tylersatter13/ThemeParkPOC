@@ -79,6 +79,11 @@ jobs:
         echo "</details>" >> $GITHUB_OUTPUT
         echo "${delimiter}" >> $GITHUB_OUTPUT
 
+    - name: Publish Whatif to Task Summary
+      env:
+          SUMMARY: ${{ steps.whatif-string.outputs.summary }}
+      run: |
+          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
     # Publish Bicep Plan as task summary
     - name: Publish Whatif to Task Summary
       env:
