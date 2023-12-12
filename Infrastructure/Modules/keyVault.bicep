@@ -24,7 +24,7 @@ param sku Sku = {
   name: 'standard'
 }
 param tenantId string = subscription().tenantId
-param valutUri string = concat('https://', keyVaultName, '.vault.azure.net')
+//param valutUri string = concat('https://', keyVaultName, '.vault.azure.net')
 type CreateMode = 'recover' | 'default' 
 
 
@@ -86,7 +86,7 @@ resource keyvault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     sku: sku
     softDeleteRetentionInDays: softDeleteRetentionInDays
     tenantId: tenantId
-    vaultUri: valutUri
+   // vaultUri: valutUri
   }
 }
 output keyVaultName string = keyvault.name
