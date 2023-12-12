@@ -1,9 +1,12 @@
+targetScope='subscription'
+
 param exists bool
 param name string
 param location string
 
 
-resource resourceGroup 'Microsoft.Storage/storageAccounts@2022-09-01' = if (!exists) {
+
+resource newRG 'Microsoft.Resources/resourceGroups@2022-09-01' = if(!exists) {
   name: name
   location: location
 }

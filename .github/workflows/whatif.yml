@@ -17,7 +17,8 @@ permissions:
   
 env:
   LOCATION: "westus2"
-  BICEP_PATH: "../Infrastructure/main.bicep"
+  BICEP_PATH: "Infrastructure/main.bicep"
+  RESOURCE_GROUP: "themepark-rg"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   bicep-whatif:
@@ -48,11 +49,10 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az deployment sub validate \
-            --name validate-${{ github.run_id }} \
+         az deployment sub validate  \
+            --name ${{ github.run_id }} \
             --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION     
-
     # Preview changes
     - name: "What-If"
       uses: Azure/cli@v1
@@ -62,7 +62,6 @@ jobs:
             --name whatif-${{ github.run_id }} \
             --template-file ${{env.BICEP_PATH}} \
             --location $LOCATION > whatif
-            
       # Create string output of Whatif
     - name: Create String Output
       id: whatif-string
@@ -80,9 +79,31 @@ jobs:
         echo "</details>" >> $GITHUB_OUTPUT
         echo "${delimiter}" >> $GITHUB_OUTPUT
 
-    # Publish Terraform Plan as task summary
+    - name: Publish Whatif to Task Summary
+      env:
+          SUMMARY: ${{ steps.whatif-string.outputs.summary }}
+      run: |
+          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
+    # Publish Bicep Plan as task summary
     - name: Publish Whatif to Task Summary
       env:
         SUMMARY: ${{ steps.whatif-string.outputs.summary }}
       run: |
         echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
+
+    # If this is a PR post the changes
+    - name: Push Whatif Output to PR
+      if: github.ref != 'refs/heads/main'
+      uses: actions/github-script@v6
+      env:
+          SUMMARY: "${{ steps.whatif-string.outputs.summary }}"
+      with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = `${process.env.SUMMARY}`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+             })
