@@ -17,7 +17,7 @@ permissions:
   
 env:
   LOCATION: "westus2"
-  BICEP_PATH: "Infrastructure/main.bicep"
+  BICEP_PATH: "Infrastructure/deployInfrastructure.bicep"
   RESOURCE_GROUP: "themepark-rg"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -49,10 +49,10 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-         az deployment sub validate  \
+         az deployment group validate  \
             --name ${{ github.run_id }} \
-            --template-file ${{env.BICEP_PATH}} \
-            --location $LOCATION     
+            --template-file ${{env.BICEP_PATH}} \     
+            --resource-group ${{env.RESOURCE_GROUP}} \
     # Preview changes
     - name: "What-If"
       uses: Azure/cli@v1
