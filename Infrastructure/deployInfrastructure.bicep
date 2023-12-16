@@ -1,8 +1,18 @@
 
 param keyVaultName string = 'ThemeParkKeyVault'
 param location string = resourceGroup().location
+param resourceGroupName string = 'ThemeParkResourceGroup'
 
-module keyvault 'Modules/keyVault.bicep' = {
+module newRG 'Modules/addResourceGroup.bicep' = {
+  name: 'newResourceGroup'
+  scope: subscription()
+  params: {
+    exists: false
+    name: resourceGroupName
+    location: location
+  }
+}
+module keyvault 'Modules/AddKeyVault.bicep' = {
   name: keyVaultName
   params: {
     keyVaultName: 'ThemeParkKeyVault'

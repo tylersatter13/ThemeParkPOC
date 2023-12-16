@@ -13,3 +13,13 @@ module addResourceGroup './Modules/addResourceGroup.bicep' = {
     exists: false
   }
 }
+module addKeyVault './Modules/addKeyVault.bicep' = {
+  name: 'addKeyVault'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    keyVaultName: keyVaultName
+    location: location
+    tenantId: subscription().tenantId
+    enablePurgeProtection: true
+  }
+}
