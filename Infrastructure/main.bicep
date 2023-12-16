@@ -1,27 +1,37 @@
 
  param keyVaultName string = 'ThemeParkKeyVault'
  param location string = 'westus2'
- 
+ param resourceGroupName string = 'ThemeParkResourceGroup'
+
 targetScope = 'subscription'
+//Create the core resource group
 module addResourceGroup './Modules/addResourceGroup.bicep' = {
   name: 'addResourceGroup'
   scope: subscription()
   params: {
-    name: 'ThemeParkResourceGroup'
+    name: resourceGroupName
     location: location
-    exists: false
+  }
+}
+//Create the key vault inside the resource group
+module addKeyVault './Modules/addKeyVault.bicep' = {
+  name: 'addKeyVault'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    keyVaultName: keyVaultName
+    location: location
+    tenantId: subscription().tenantId
+    enablePurgeProtection: true
   }
 }
 
-/* module keyvault 'Modules/keyVault.bicep' = {
-  name: keyVaultName
+//Create the app configuration store inside the resource group
+//and link it to the key vault
+module addAppConfig './Modules/addAppConfiguration.bicep' = {
+  name: 'addAppConfig'
+  scope: resourceGroup(resourceGroupName)
   params: {
-    keyVaultName: 'ThemeParkKeyVault'
+    configStoreName: 'ThemeParkAppConfig'
     location: location
-    tags: null
-    createMode: 'default'
-    enableSoftDelete: true
-    enablePurgeProtection: true
-    enableRbacAuthorization: true
   }
-} */
+}
