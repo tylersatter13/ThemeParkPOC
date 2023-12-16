@@ -7,7 +7,6 @@ module newRG 'Modules/addResourceGroup.bicep' = {
   name: 'newResourceGroup'
   scope: subscription()
   params: {
-    exists: false
     name: resourceGroupName
     location: location
   }

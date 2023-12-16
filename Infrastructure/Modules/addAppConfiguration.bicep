@@ -43,6 +43,7 @@ param keyVaultProperties KeyVaultProperties = {
 
 @allowed(['Enabled', 'Disabled'])
 param publicNetworkAccess string = 'Enabled'
+
 resource symbolicname 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
   name: configStoreName
   location: location
@@ -60,4 +61,6 @@ resource symbolicname 'Microsoft.AppConfiguration/configurationStores@2023-03-01
     softDeleteRetentionInDays: softDeleteRetentionInDays
   }
 }
+output configStoreName string = symbolicname.name
+output configStoreId string = symbolicname.id
 

@@ -11,7 +11,6 @@ module addResourceGroup './Modules/addResourceGroup.bicep' = {
   params: {
     name: resourceGroupName
     location: location
-    exists: false
   }
 }
 //Create the key vault inside the resource group
@@ -25,6 +24,7 @@ module addKeyVault './Modules/addKeyVault.bicep' = {
     enablePurgeProtection: true
   }
 }
+
 //Create the app configuration store inside the resource group
 //and link it to the key vault
 module addAppConfig './Modules/addAppConfiguration.bicep' = {
@@ -33,9 +33,5 @@ module addAppConfig './Modules/addAppConfiguration.bicep' = {
   params: {
     configStoreName: 'ThemeParkAppConfig'
     location: location
-    keyVaultProperties: {
-      identityClientId: addKeyVault.outputs.keyVaultId
-      keyIdentifier : addKeyVault.outputs.keyVaultUri
-    }
   }
 }
