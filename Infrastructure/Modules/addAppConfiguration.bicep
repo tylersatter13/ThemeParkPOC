@@ -24,7 +24,8 @@ param disableLocalAuth bool = false
 param enablePurgeProtection bool = false
 
 @description('The amount of time in days that the configuration store will be retained when it is soft deleted.')
-param softDeleteRetentionInDays int = 90
+@allowed([1,2,3,4,5,6,7])
+param softDeleteRetentionInDays int = 7
 
 /*type KeyVaultProperties = {
   @description('The client id of the identity which will be used to access key vault.')
