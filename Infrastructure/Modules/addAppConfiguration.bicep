@@ -12,10 +12,7 @@ param sku object = {
   name: 'Standard'
 }
 @description('Specifies the identity of the App Configuration store.')
-param identity object = {
-  type: 'SystemAssigned'
-  userAssignedIdentities: {}
-}
+param identity object = {}
 @description('Indicates whether the configuration store need to be recovered.')
 @allowed(['Default', 'Recover'])
 param createMode string = 'Default'
