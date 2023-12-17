@@ -35,3 +35,15 @@ module addAppConfig './Modules/addAppConfiguration.bicep' = {
     location: location
   }
 }
+
+module addKeyVaultAccessPolicy './Modules/addKeyVaultAccessPolicy.bicep' = {
+  name: 'addKeyVaultAccessPolicy'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    keyVaultName: addKeyVault.outputs.keyVaultName
+   // applicationId: addAppConfig.outputs.configStoreId
+    tenantId: subscription().tenantId
+    objectId: addAppConfig.outputs.configStoreId
+    resourceName: addAppConfig.outputs.configStoreName
+  }
+}
